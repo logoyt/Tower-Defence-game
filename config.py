@@ -1,6 +1,6 @@
 import os
 import pygame as pg
-from math import ceil
+from math import ceil, sqrt
 from tkinter import Tk
 
 def load_image(img, rez, alpha=True, crop=False):
@@ -26,6 +26,11 @@ def load_image(img, rez, alpha=True, crop=False):
 	else:
 		img.convert()
 	return img
+
+def scale_vector(vector, length):
+	l = sqrt(sum([i**2 for i in vector]))
+	scale = length / l
+	return tuple([i * scale for i in vector])
 
 temp = Tk()
 SCREEN = temp.winfo_screenwidth(), temp.winfo_screenheight()
