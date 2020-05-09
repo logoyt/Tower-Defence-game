@@ -4,33 +4,33 @@ from math import ceil, sqrt
 from tkinter import Tk
 
 def load_image(img, rez, alpha=True, crop=False):
-	img = pg.image.load(img)
-	if crop:
-		w, h = img.get_size()
-		# увеличиваем изначальную картинку, если по одной из сторон она меньше
-		if rez[0] > w or rez[1] > h:
-			scale = max(rez[0] / w, rez[1] / h)
-			img = pg.transform.scale(img, (ceil(w * scale), ceil(h * scale)))
-			w, h = img.get_size()
-		# уменьшаем изначальную картинку, если по обеим сторонам она больше
-		if w > rez[0] and h > rez[1]:
-			scale = max(rez[0] / w, rez[1] / h)
-			img = pg.transform.scale(img, (ceil(w * scale), ceil(h * scale)))
-			w, h = img.get_size()
-		# обрезаем излишки
-		img = img.subsurface((0, 0, *rez))
+    img = pg.image.load(img)
+    if crop:
+        w, h = img.get_size()
+        # увеличиваем изначальную картинку, если по одной из сторон она меньше
+        if rez[0] > w or rez[1] > h:
+            scale = max(rez[0] / w, rez[1] / h)
+            img = pg.transform.scale(img, (ceil(w * scale), ceil(h * scale)))
+            w, h = img.get_size()
+        # уменьшаем изначальную картинку, если по обеим сторонам она больше
+        if w > rez[0] and h > rez[1]:
+            scale = max(rez[0] / w, rez[1] / h)
+            img = pg.transform.scale(img, (ceil(w * scale), ceil(h * scale)))
+            w, h = img.get_size()
+        # обрезаем излишки
+        img = img.subsurface((0, 0, *rez))
 
-	img = pg.transform.scale(img, rez)
-	if alpha:
-		img.convert_alpha()
-	else:
-		img.convert()
-	return img
+    img = pg.transform.scale(img, rez)
+    if alpha:
+        img.convert_alpha()
+    else:
+        img.convert()
+    return img
 
 def scale_vector(vector, length):
-	l = sqrt(sum([i**2 for i in vector]))
-	scale = length / l
-	return tuple([i * scale for i in vector])
+    l = sqrt(sum([i**2 for i in vector]))
+    scale = length / l
+    return tuple([i * scale for i in vector])
 
 temp = Tk()
 SCREEN = temp.winfo_screenwidth(), temp.winfo_screenheight()
