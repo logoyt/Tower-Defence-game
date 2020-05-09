@@ -4,24 +4,27 @@ import random as r
 from config import *
 
 class Tower():
-    def __init__(self, pos, entities, field_coords):
+    def __init__(self, pos, entities, field_coords, lvl=1):
         self.image = pg.Surface((SCALE, SCALE)).convert_alpha()
-        self.image.fill((*BLUE, 255))
-        pg.draw.rect(self.image, BLACK, self.image.get_rect(), 1)
-
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
+        self.font = pg.font.SysFont('comicsansms', int(SCALE*.75))
 
         self.entities = entities
-
         self.delay = 500
         self.timer = 0
-
         self.dmg = 5
+        self.lvl = lvl
 
         self.field_coords = field_coords
 
     def draw(self):
+        self.image.fill((*BLUE, 255))
+        pg.draw.rect(self.image, BLACK, self.image.get_rect(), 1)
+        text = self.font.render(str(self.lvl), True, BLACK)
+        text_size = text.get_size()
+        coords = tuple([(a-b)//2 for a, b in zip(self.rect.size, text_size)])
+        self.image.blit(text, coords)
         return self.image, self.rect.topleft
 
     def update(self, ms):
