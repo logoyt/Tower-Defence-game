@@ -1,6 +1,6 @@
 import os
 import pygame as pg
-from math import ceil
+from math import ceil, sqrt
 from tkinter import Tk
 
 def load_image(img, rez, alpha=True, crop=False):
@@ -27,6 +27,11 @@ def load_image(img, rez, alpha=True, crop=False):
 		img.convert()
 	return img
 
+def scale_vector(vector, length):
+	l = sqrt(sum([i**2 for i in vector]))
+	scale = length / l
+	return tuple([i * scale for i in vector])
+
 temp = Tk()
 SCREEN = temp.winfo_screenwidth(), temp.winfo_screenheight()
 del temp
@@ -37,7 +42,14 @@ FPS = 60
 
 # WIN_COORDS = (SCREEN[0] - W) // 2, (SCREEN[1] - H) // 2
 WIN_COORDS = (SCREEN[0] - W - 100, 100)
+# print(WINSIZE)
 
 current_dir = os.path.dirname(__file__)
 textures = os.path.join(current_dir, 'textures')
 BG = os.path.join(textures, 'bg.jpg')
+
+# COLORS   R    G    B    T
+WHITE = (255, 255, 255)
+BLACK = (  0,   0,   0)
+BLUE  = (173, 188, 230)
+GREEN = (188, 230, 173)
