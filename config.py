@@ -43,6 +43,8 @@ current_dir = os.path.dirname(__file__)
 textures = os.path.join(current_dir, 'textures')
 BG = os.path.join(textures, 'bg.jpg')
 
-# COLORS   R    G    B
+# COLORS   R    G    B    T
 WHITE = (255, 255, 255)
 BLACK = (  0,   0,   0)
+BLUE  = (173, 188, 230)
+GREEN = (188, 230, 173)

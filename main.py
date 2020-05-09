@@ -5,6 +5,7 @@ from os import environ
 
 from field import *
 from config import *
+from enemy import *
 
 class Game:
 	def __init__(self):
@@ -16,6 +17,7 @@ class Game:
 		self.running = False
 		self.scheme_exists = False
 		self.field = Field(self.window)
+		self.rout = Rout(self.field)
 
 	def run(self):
 		self.running = True
@@ -33,6 +35,8 @@ class Game:
 				if e.key == K_ESCAPE:
 					self.running = False
 					return
+				if e.key == K_SPACE:
+					self.field.new_tower()
 
 	def update(self):
 		ms = self.clock.tick_busy_loop(FPS)
@@ -43,9 +47,9 @@ class Game:
 		function for placement planning
 		'''
 		if not self.scheme_exists:
-			self.scheme = pg.Surface(self.window.get_size())
-			self.scheme.fill(WHITE)
-			self.scheme.set_alpha(128)
+			self.scheme = pg.Surface(self.window.get_size()).convert_alpha()
+			self.scheme.fill((*WHITE, 64))
+			# self.scheme.set_alpha(128)
 			self.scheme_exists = True
 			# интерфейс игры
 			# pg.draw.line(self.scheme, BLACK, (W//2, 0), (W//2, H), 1)
@@ -66,6 +70,7 @@ class Game:
 		pg.display.set_caption(f'FPS: {self.clock.get_fps()}')
 		self.draw_scheme()
 		self.window.blit(*self.field.draw())
+		self.window.blit(*self.rout.draw())
 		pg.display.update()
 
 if __name__ == '__main__':
