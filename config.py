@@ -51,5 +51,6 @@ BG = os.path.join(textures, 'bg.jpg')
 # COLORS   R    G    B    T
 WHITE = (255, 255, 255)
 BLACK = (  0,   0,   0)
-BLUE  = (173, 188, 230)
-GREEN = (188, 230, 173)
+BLUE  = (124,   0, 118)
+GREEN = (  0, 124,   6)
+RED   = (255,  32,  21)

@@ -5,7 +5,7 @@ from tower import *
 from config import *
 
 class Field():
-	def __init__(self, window, pos=(W//2, H//2)):
+	def __init__(self, window, entities, pos=(W//2, H//2)):
 		self.field = [[None] * 5 for _ in range(3)]
 		self.cell = SCALE
 		self.gap = max(2, self.cell // 12)
@@ -14,6 +14,8 @@ class Field():
 		self.image = pg.Surface((w, h)).convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.center = pos
+
+		self.entities = entities
 
 	def update(self, ms):
 		self.image.fill((*WHITE, 128))
@@ -26,6 +28,7 @@ class Field():
 				if self.field[row][col] is None:
 					pg.draw.rect(self.image, BLACK, (x, y, self.cell, self.cell), 1)
 				else:
+					self.field[row][col].update(ms)
 					self.image.blit(*self.field[row][col].draw())
 
 	def draw(self):
@@ -39,6 +42,6 @@ class Field():
 				if self.field[row][col] is None:
 					x = self.gap + (self.gap + self.cell) * (col + 1) - self.cell
 					y = self.gap + (self.gap + self.cell) * (row + 1) - self.cell
-					self.field[row][col] = Tower((x, y))
+					self.field[row][col] = Tower((x, y), self.entities, self.rect.topleft)
 					break
 

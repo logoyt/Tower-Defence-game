@@ -16,9 +16,13 @@ class Game:
 		self.clock = pg.time.Clock()
 		self.running = False
 		self.scheme_exists = False
-		self.field = Field(self.window)
+		self.entities = {
+			'enemies': pg.sprite.Group(),
+			'bullets': pg.sprite.Group(),
+		}
+		self.field = Field(self.window, self.entities)
 		self.rout = Rout(self.field)
-		self.enemies = pg.sprite.Group()
+		self.enemies_count = 0
 
 	def run(self):
 		self.running = True
@@ -40,11 +44,16 @@ class Game:
 					self.field.new_tower()
 				if e.key == K_s:
 					enemy = Enemy(self.rout)
-					enemy.add(self.enemies)
+					enemy.add(self.entities['enemies'])
+					self.enemies_count += 1
+					if self.enemies_count > 10:
+						Enemy.hp = int(Enemy.hp * 1.1)
+						self.enemies_count -= 10
 
 	def update(self):
 		ms = self.clock.tick_busy_loop(FPS)
-		self.enemies.update(ms)
+		self.entities['enemies'].update(ms)
+		self.entities['bullets'].update(ms)
 		self.field.update(ms)
 
 	def draw_scheme(self):
@@ -76,7 +85,8 @@ class Game:
 		self.draw_scheme()
 		self.window.blit(*self.field.draw())
 		self.window.blit(*self.rout.draw())
-		self.enemies.draw(self.window)
+		self.entities['enemies'].draw(self.window)
+		self.entities['bullets'].draw(self.window)
 		pg.display.update()
 
 if __name__ == '__main__':

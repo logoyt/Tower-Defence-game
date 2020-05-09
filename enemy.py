@@ -29,29 +29,32 @@ class Rout():
 
 
 class Enemy(pg.sprite.Sprite):
+	hp = 10 
 	def __init__(self, rout):
 		pg.sprite.Sprite.__init__(self)
 		self.image = pg.Surface((SCALE//2, SCALE//2)).convert_alpha()
-		self.image.fill((*GREEN, 128))
+		self.image.fill((*GREEN, 255))
+		pg.draw.rect(self.image, BLACK, self.image.get_rect(), 1)
 		self.rect = self.image.get_rect()
 		self.rout = rout
 		self.step = 0
 		self.rect.center = self.rout.real_dot(self.step)
 		self.speed = 2
+		self.health = self.health_max = self.hp
 
 	def update(self, ms):
 		dest = self.rout.real_dot(self.step + 1)
 		vector = tuple([b - a for a, b in zip(self.rect.center, dest)])
-		print(f'{self.rect.center=}, {dest=}')
-		print(f'{vector=}')
 		vector = scale_vector(vector, self.speed)
 		new_pos = tuple(map(sum, zip(self.rect.center, vector)))
 		
 		if all([abs(a - b) < self.speed for a, b in zip(dest, new_pos)]):
-			print(dest, new_pos)
 			new_pos = dest
 			self.step += 1
 
 		self.rect.center = new_pos
+		if self.health <= -self.health_max:
+			self.kill()
 		if self.step == len(self.rout.dots) - 1:
 			self.kill()
+
