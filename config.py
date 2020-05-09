@@ -37,7 +37,12 @@ FPS = 60
 
 # WIN_COORDS = (SCREEN[0] - W) // 2, (SCREEN[1] - H) // 2
 WIN_COORDS = (SCREEN[0] - W - 100, 100)
+# print(WINSIZE)
 
 current_dir = os.path.dirname(__file__)
 textures = os.path.join(current_dir, 'textures')
 BG = os.path.join(textures, 'bg.jpg')
+
+# COLORS   R    G    B
+WHITE = (255, 255, 255)
+BLACK = (  0,   0,   0)
