@@ -17,6 +17,8 @@ class Tower():
 		self.delay = 500
 		self.timer = 0
 
+		self.dmg = 5
+
 		self.field_coords = field_coords
 
 	def draw(self):
@@ -30,24 +32,24 @@ class Tower():
 
 		if self.timer == 0:
 			for enemy in self.entities['enemies']:
-				if enemy.health >= 0:
+				if enemy.damage <= enemy.health_max:
 					coords = tuple(map(sum, zip(self.rect.center, self.field_coords)))
-					bullet = Bullet(enemy, coords)
-					enemy.health -= bullet.dmg
+					bullet = Bullet(enemy, coords, self.dmg)
+					enemy.damage += bullet.dmg
 					self.entities['bullets'].add(bullet)
 					self.timer += ms
 					break
 
 class Bullet(pg.sprite.Sprite):
-	def __init__(self, target, pos):
+	def __init__(self, target, pos, dmg):
 		pg.sprite.Sprite.__init__(self)
 		self.image = pg.Surface((8, 8)).convert_alpha()
 		self.image.fill((*RED, 255))
 		self.rect = self.image.get_rect()
 		self.rect.center = pos
 		self.target = target
-		self.speed = 6
-		self.dmg = 5
+		self.speed = 8
+		self.dmg = dmg
 
 	def update(self, ms):
 		# if self.rect.center == self.target.rect.center:
@@ -62,7 +64,7 @@ class Bullet(pg.sprite.Sprite):
 			# new_pos = self.target.rect.center
 			self.target.health -= self.dmg
 			self.kill()
-		if not self.target.alive():
+		if not self.target.alive(): # почему то работает и без этого условия
 			self.kill()
 
 		self.rect.center = new_pos

@@ -23,6 +23,7 @@ class Game:
 		self.field = Field(self.window, self.entities)
 		self.rout = Rout(self.field)
 		self.enemies_count = 0
+		self.enemy_hp = 10
 
 	def run(self):
 		self.running = True
@@ -43,11 +44,11 @@ class Game:
 				if e.key == K_SPACE:
 					self.field.new_tower()
 				if e.key == K_s:
-					enemy = Enemy(self.rout)
+					enemy = Enemy(self.rout, self.enemy_hp)
 					enemy.add(self.entities['enemies'])
 					self.enemies_count += 1
 					if self.enemies_count > 10:
-						Enemy.hp = int(Enemy.hp * 1.1)
+						self.enemy_hp = int(self.enemy_hp * 1.1)
 						self.enemies_count -= 10
 
 	def update(self):
